@@ -20,15 +20,13 @@ export class LoginComponent {
     return this.loginForm.get(value);
   }
   saveForm() {
-    var localEmail=localStorage.getItem('email');
-    var localPassword=localStorage.getItem('password');
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
     const email = this.loginForm.value.email;
     const password = this.loginForm.value.password;
-
-    if(localEmail==email && localPassword==password && this.loginForm.valid){
-      // alert('Login Successfull');
+    // const user = users.find((user: any) => user.email === email && user.password === password);
+    if(users.email==email && users.password==password && this.loginForm.valid){
       localStorage.setItem('login_token', 'token');
-      this.router.navigate(['/user/user-com']);
+      this.router.navigate(['/user']);
     }
     else{
       this.toastr.warning('Please write again', 'Invalid Credential!');

@@ -1,22 +1,27 @@
 import { Component, inject } from '@angular/core';
-import { AbstractControl, FormBuilder, ValidationErrors, Validators } from '@angular/forms';
-import{countries} from '../../data/countries';
-import{states} from '../../data/states';
+import { AbstractControl, AbstractControlOptions, FormBuilder, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { countries } from '../../data/countries';
+import { states } from '../../data/states';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { CustomValidators } from 'src/app/directives/validators';
+
 @Component({
-  selector: 'app-signupMat-material',
-  templateUrl: './signup-material.component.html',
-  styleUrls: ['./signup-material.component.scss']
+  selector: 'app-signup',
+  templateUrl: './signup.component.html',
+  styleUrls: ['./signup.component.scss']
 })
-export class SignupMaterialComponent {
+export class SignupComponent {
   states: { [key: string]: { id: string; name: string; }[] } = states;
-  countries=countries;
+  countries = countries;
   hide = true;
   hide1 = true;
   private fb = inject(FormBuilder);
   private router = inject(Router);
+  private toastr = inject(ToastrService);
+  gg=FormControl;
   signupMat = this.fb.group({
-    firstName: [null, [Validators.required,Validators.maxLength(20)]],
+    firstName: [null, [Validators.required, Validators.maxLength(20)]],
     lastName: [null, Validators.required],
     email: [null, [Validators.required, Validators.email]],
     phoneNumber: [null, [Validators.required]],
@@ -27,23 +32,16 @@ export class SignupMaterialComponent {
     confirmPassword: [null, Validators.required]
   },
     {
-      validators: this.passwordMatchValidator
-    }
+      validator: CustomValidators.confirmPasswordValidator(),
+    } as AbstractControlOptions
   );
   //func to get form values
   getControl(formControl: string) {
     return this.signupMat.get(formControl);
   }
 
-  //passwordmatcher validator
-  passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
-    const password = control.get('password')?.value;
-    const confirmPassword = control.get('confirmPassword')?.value;
-    return password === confirmPassword ? null : { mismatch: true };
-  }
-
   //func to get states list by country key
-  getStates(){
+  getStates() {
     const country = this.signupMat.get('country')?.value;
     if (country) {
       return this.states[country];
@@ -51,14 +49,16 @@ export class SignupMaterialComponent {
     return [];
   }
   onSubmit() {
-    if( this.signupMat.valid) {
+    if (this.signupMat.valid) {
       localStorage.clear();
-      console.log(this.signupMat.value);
-      localStorage.setItem('email', this.signupMat.get('email')?.value!);
-      localStorage.setItem('password', this.signupMat.get('password')?.value!);
+      // const users = JSON.parse(localStorage.getItem('users') || '[]');
+      // users.push(this.signupMat.value);
+      var users=this.signupMat.value;
+      localStorage.setItem('users', JSON.stringify(users));
       this.router.navigate(['/auth/login']);
+      this.toastr.success('User registered successfully', 'Success!');
     } else {
-      alert('Please fill out all the required fields.');
+      this.toastr.warning('Please write again', 'Invalid Credential!');
     }
   }
 }

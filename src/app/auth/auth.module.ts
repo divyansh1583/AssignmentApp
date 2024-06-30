@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthRoutingModule } from './auth-routing.module';
-import { SignupFormComponent } from './signup-form/signup-form.component';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -13,15 +13,18 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { SignupMaterialComponent } from './signup-material/signup-material.component';
 import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
+import { SignupComponent } from './signup/signup.component';
+
 @NgModule({
   declarations: [
-    SignupFormComponent,
     NoSpaceDirective,
     LoginComponent,
-    SignupMaterialComponent
+    ForgetPasswordComponent,
+    SignupComponent,
+
   ],
   imports: [
     CommonModule,
