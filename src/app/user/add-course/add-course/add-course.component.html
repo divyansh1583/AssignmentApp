@@ -1,1 +1,38 @@
-<p>add-course works!</p>
+<!-- src/app/add-course/add-course.component.html -->
+
+<div>
+    <button mat-raised-button color="primary" (click)="addCourse()">Add Course</button>
+  </div>
+  <div *ngIf="courses.length === 0">
+    No record
+  </div>
+  <div *ngIf="courses.length > 0">
+    <table mat-table [dataSource]="courses" class="mat-elevation-z8">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> ID </th>
+        <td mat-cell *matCellDef="let course"> {{course.id}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let course"> {{course.name}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="duration">
+        <th mat-header-cell *matHeaderCellDef> Duration </th>
+        <td mat-cell *matCellDef="let course"> {{course.duration}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let course">
+          <button mat-button (click)="editCourse(course)">Update</button>
+          <button mat-button color="warn" (click)="deleteCourse(course.id)">Delete</button>
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+  
