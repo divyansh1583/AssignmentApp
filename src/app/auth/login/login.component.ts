@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
+hide=true;
   
   constructor(private router:Router,private toastr: ToastrService) { }
 
@@ -25,11 +26,13 @@ export class LoginComponent {
     const password = this.loginForm.value.password;
     // const user = users.find((user: any) => user.email === email && user.password === password);
     if(users.email==email && users.password==password && this.loginForm.valid){
+      this.toastr.clear();
       localStorage.setItem('login_token', 'token');
       this.router.navigate(['/user']);
+      this.toastr.success('Login Successful', 'Success!');
     }
     else{
-      this.toastr.warning('Please write again', 'Invalid Credential!');
+      this.toastr.error('Invalid Credential!','Error');
     }
     
   }
