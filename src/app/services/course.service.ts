@@ -15,6 +15,8 @@ export class CourseService {
     //get new unique id by making array of ids this.courses.map(course => course.id)
     //then spreding them ... spread operator and findin max by math.max
     this.idCounter = this.courses.length > 0 ? Math.max(...this.courses.map(course => course.id)) + 1 : 1;
+
+    // this.addCourse({name:'CS',duration:'2 weeks'});
   }
 
   //get all courses
@@ -25,7 +27,8 @@ export class CourseService {
   //add new course
   //add data type
   addCourse(course:any){
-    course.id=this.idCounter++ //post increment operator: first value is assigned than updated
+    console.log("From add"+JSON.stringify(course));
+    course.id=this.idCounter++; //post increment operator: first value is assigned than updated
     this.courses.push(course);
     this.updateSessionStorage();
   }
