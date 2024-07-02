@@ -29,6 +29,20 @@ export class CourseService {
     this.courses.push(course);
     this.updateSessionStorage();
   }
+  
+  //update course
+  updateCourse(course:any){
+    this.courses = this.courses.map(c => c.id === course.id ? course : c);
+    this.updateSessionStorage();
+  }
+
+  //delete course
+  deleteCourse(id:number){
+    this.courses = this.courses.filter(c => c.id !== id);
+    this.updateSessionStorage();
+  }
+
+  //update seesion storage to current storage
   updateSessionStorage() {
     sessionStorage.setItem('storedCourses',JSON.stringify(this.courses));
   }

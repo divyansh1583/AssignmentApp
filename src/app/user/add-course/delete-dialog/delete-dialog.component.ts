@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-delete-dialog',
@@ -6,5 +7,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./delete-dialog.component.scss']
 })
 export class DeleteDialogComponent {
+  constructor(public dialogRef: MatDialogRef<DeleteDialogComponent>) {}
 
+  onConfirm(): void {
+    this.dialogRef.close(true);
+  }
+
+  onCancel(): void {
+    this.dialogRef.close(false);
+  }
 }
