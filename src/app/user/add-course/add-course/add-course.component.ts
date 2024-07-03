@@ -11,21 +11,27 @@ import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component'
   styleUrls: ['./add-course.component.scss']
 })
 export class AddCourseComponent {
-
+  courses: any[] = [];
+  private idCounter = 1;
   @ViewChild('table') table: MatTable<Element> | null=null;
   displayedColumns: string[] = ['id', 'name', 'duration', 'actions'];
-  courses: any[] = [];
+  // courses: any[] = [];
 
-  constructor(private courseService: CourseService, public dialog: MatDialog, private cdr: ChangeDetectorRef) { }
-  // constructor(public dialog: MatDialog){}
+  constructor( public dialog: MatDialog, private cdr: ChangeDetectorRef) {
+    const storedCourses = localStorage.getItem('courses');
+    const storedId = localStorage.getItem('idCounter');
+    this.courses = storedCourses ? JSON.parse(storedCourses) : [];
+    // this.idCounter = this.courses.length > 0 ? Math.max(...this.courses.map(course => course.id)) + 1 : 1;
+    this.idCounter=storedId?parseInt(storedId):1;
+
+
+   }
+ 
   ngOnInit(): void {
     // this.cdr.detectChanges();
-    this.loadCourses();
+   
   }
 
-  loadCourses() {
-    this.courses = this.courseService.getCourses();
-  }
 
   //add courses
   addCourse() {
@@ -37,9 +43,10 @@ export class AddCourseComponent {
     dialogRef.afterClosed().subscribe(
       result => {
         if (result) {
-          this.courseService.addCourse(result);
-          this.loadCourses();
-          this.table?.renderRows();
+          result.id=this.idCounter++;
+          this.courses.push(result);
+          localStorage.setItem('storedIdCounter',this.idCounter.toString()) 
+          localStorage.setItem('storedCourses',JSON.stringify(this.courses));
         }
       }
     );
@@ -54,9 +61,8 @@ export class AddCourseComponent {
     dialogRef.afterClosed().subscribe(
       result=>{
         if(result){
-          this.courseService.updateCourse(result);
-          this.loadCourses();
-          this.table?.renderRows();
+          this.courses=this.courses.map(c => c.id === result.id ? result : c);
+          localStorage.setItem('storedCourses',JSON.stringify(this.courses));
         }
       }
     );
@@ -69,9 +75,8 @@ export class AddCourseComponent {
     dialogRef.afterClosed().subscribe(
       result=>{
         if(result){
-          this.courseService.deleteCourse(courseId);
-          this.loadCourses();
-          this.table?.renderRows();
+          this.courses = this.courses.filter(c => c.id !== courseId);
+          localStorage.setItem('storedCourses',JSON.stringify(this.courses));
         }
       }
     );

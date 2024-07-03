@@ -1,39 +1,34 @@
-<div class="d-flex h-100">
-  <div class="mx-auto my-auto text-center ">
-    <div class="my-3">
-      <button mat-raised-button color="primary" (click)="addCourse()">Add Course</button>
-    </div>
-    <div *ngIf="courses.length === 0">
-        <p class="text-primary lead my-3">No Record!</p>
-    </div>
-    <div *ngIf="courses.length > 0">
-      <table mat-table #table [dataSource]="courses" class="mat-elevation-z3">
-        <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef> ID </th>
-          <td mat-cell *matCellDef="let course"> {{course.id}} </td>
-        </ng-container>
+<div class=" text-center my-3">
+<!-- Add button -->
+  <button mat-raised-button color="primary" (click)="addCourse()">Add Course</button>
+  <div *ngIf="courses.length === 0">
+    <p class="text-primary lead my-3">No Record!</p>
+  </div>
+</div>
 
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef> Name </th>
-          <td mat-cell *matCellDef="let course"> {{course.name}} </td>
-        </ng-container>
+<!-- If there are no courses -->
 
-        <ng-container matColumnDef="duration">
-          <th mat-header-cell *matHeaderCellDef> Duration </th>
-          <td mat-cell *matCellDef="let course"> {{course.duration}} </td>
-        </ng-container>
+<!-- if there are some courses -->
+<div *ngIf="courses.length > 0">
+  <!-- table -->
+  
 
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef> Actions </th>
-          <td mat-cell *matCellDef="let course">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th *ngFor="let column of displayedColumns" scope="col">{{column | titlecase}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let course of courses">
+          <td>{{course.id}}</td>
+          <td>{{course.name}}</td>
+          <td>{{course.duration}}</td>
+          <td>
             <button mat-icon-button (click)="editCourse(course)"><mat-icon>edit</mat-icon></button>
             <button mat-icon-button color="warn" (click)="deleteCourse(course.id)"><mat-icon>delete</mat-icon></button>
           </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-    </div>
+        </tr>
+      </tbody>
+    </table>
   </div>
-</div>

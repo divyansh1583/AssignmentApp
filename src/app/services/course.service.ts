@@ -10,19 +10,17 @@ export class CourseService {
   
   constructor() {
     const storedCourses = sessionStorage.getItem('courses');
-    //stores courses if present else empty list
     this.courses = storedCourses ? JSON.parse(storedCourses) : [];
-    //get new unique id by making array of ids this.courses.map(course => course.id)
-    //then spreding them ... spread operator and findin max by math.max
     this.idCounter = this.courses.length > 0 ? Math.max(...this.courses.map(course => course.id)) + 1 : 1;
-
-    // this.addCourse({name:'CS',duration:'2 weeks'});
+    
+    //initialized data
+    this.addCourse({name:'CS',duration:'2 weeks'});
   }
 
   //get all courses
-  getCourses() {
-    return this.courses;
-  }
+  // getCourses() {
+  //   return this.courses;
+  // }
 
   //add new course
   //add data type
