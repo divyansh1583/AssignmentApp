@@ -21,7 +21,7 @@ import { ToastrModule } from 'ngx-toastr';
     BrowserAnimationsModule,
     MatInputModule, // Add MatInputModule to imports
     ToastrModule.forRoot({
-      timeOut: 10000,
+      timeOut: 1000,
       positionClass: 'toast-bottom-right',
       preventDuplicates: true,
       closeButton: true

@@ -4,9 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { AddCourseRoutingModule } from './add-course-routing.module';
 import { AddCourseComponent } from './add-course/add-course.component';
-import { CourseDialogComponent } from './course-dialog/course-dialog.component';
-import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
-
+import { CourseDialogComponent, DeleteComponent } from './course-dialog/course-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTableModule } from '@angular/material/table';
@@ -18,7 +16,8 @@ import { MatButtonModule } from '@angular/material/button';
   declarations: [
     AddCourseComponent,
     CourseDialogComponent,
-    DeleteDialogComponent
+
+    DeleteComponent
   ],
   imports: [
     CommonModule,
