@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AddCourseRoutingModule } from './add-course-routing.module';
 import { AddCourseComponent } from './add-course/add-course.component';
-import { CourseDialogComponent, DeleteComponent } from './course-dialog/course-dialog.component';
+import { CourseDialogComponent} from './course-dialog/course-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTableModule } from '@angular/material/table';
@@ -16,8 +16,6 @@ import { MatButtonModule } from '@angular/material/button';
   declarations: [
     AddCourseComponent,
     CourseDialogComponent,
-
-    DeleteComponent
   ],
   imports: [
     CommonModule,
@@ -28,7 +26,8 @@ import { MatButtonModule } from '@angular/material/button';
     MatTableModule,
     MatInputModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    ReactiveFormsModule
   ]
 })
 export class AddCourseModule { }

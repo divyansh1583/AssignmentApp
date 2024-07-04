@@ -1,87 +1,71 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CourseDialogComponent } from '../course-dialog/course-dialog.component';
 import { ToastrService } from 'ngx-toastr';
+import { Course } from 'src/app/models/course.model';
 
 @Component({
   selector: 'app-add-course',
   templateUrl: './add-course.component.html',
   styleUrls: ['./add-course.component.scss']
 })
-export class AddCourseComponent {
+export class AddCourseComponent implements OnInit{
+  @ViewChild('deleteDialog') deleteDialog!: TemplateRef<any>;
 
-
-  private idCounter = 1;
-  protected courses: any[] = [];
+  protected courses: Course[] = [];
   protected displayedColumns: string[] = ['id', 'name', 'duration', 'actions'];
 
 
   constructor(
-    public dialog: MatDialog,
-    private toastr: ToastrService
-  ) {
-    // localStorage.setItem('storedCourses', JSON.stringify({ id: 1, name: 'ECE', duration: '4 Weeks' }));
-    const storedCourses = localStorage.getItem('storedCourses');
-    const storedId = localStorage.getItem('idCounter');
-    this.idCounter = storedId ? parseInt(storedId) : 1;
-    this.courses = storedCourses ? JSON.parse(storedCourses) : [];
+    public dialog: MatDialog, 
+    private toastr: ToastrService,
+    private cdr: ChangeDetectorRef) {}
 
+  ngOnInit(): void {
+    this.loadCourses();
+  }
+
+  loadCourses() {
+    const storedCourses = localStorage.getItem('storedCourses');
+    this.courses = storedCourses ? JSON.parse(storedCourses) : [];
   }
 
   //add courses
-  addCourse() {
+  addEditCourse(course?: Course) {
     var dialogRef = this.dialog.open(CourseDialogComponent, {
       width: '350px',
-      data: { course: { name: '', duration: '' } },
-    });
-
-    dialogRef.afterClosed().subscribe(
-      result => {
-        if (result) {
-          result.id = this.idCounter++;
-          this.courses.push(result);
-          localStorage.setItem('storedIdCounter', this.idCounter.toString())
-          localStorage.setItem('storedCourses', JSON.stringify(this.courses));
-          this.toastr.success("Course Added successfully");
-        }
+      data: { 
+        course: course ? 
+        { ...course } : 
+        { id: this.generateId(), name: '', duration: '' }, 
+        courses: this.courses 
       }
-    );
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.cdr.markForCheck();
+    });
   }
 
-  //edit courses
-  editCourse(course: any) {
-    var dialogRef = this.dialog.open(CourseDialogComponent, {
-      // width:'250px',
-      data: { course }
-    });
-    dialogRef.afterClosed().subscribe(
-      result => {
-        if (result) {
-          this.courses = this.courses.map(c => c.id === result.id ? result : c);
-          localStorage.setItem('storedCourses', JSON.stringify(this.courses));
-          this.toastr.success("Course Edited successfully");
-        }
-      }
-    );
-
+  generateId(): number {
+    return this.courses.length > 0 ? 
+    Math.max(...this.courses.map(course => course.id)) + 1 : 
+    1;
   }
+
   //delete courses
-  // deleteCourse(courseId: number) {
-  //   var dialogRef = this.dialog.open(this.deleteDialog!);
-  //   dialogRef.afterClosed().subscribe(
-  //     result => {
-  //       if (result) {
-  //         this.courses = this.courses.filter(c => c.id !== courseId);
-  //         localStorage.setItem('storedCourses', JSON.stringify(this.courses));
-  //         this.toastr.success("Course Delete successfully");
-  //       }
-  //     }
-  //   );
+  deleteCourse(courseId: number) {
+    var dialogRef = this.dialog.open(this.deleteDialog!);
+    dialogRef.afterClosed().subscribe(
+      result => {
+        if (result) {
+          this.courses = this.courses.filter(c => c.id !== courseId);
+          localStorage.setItem('storedCourses', JSON.stringify(this.courses));
+          this.toastr.success("Course Delete successfully");
+        }
+      }
+    );
 
-  // }
+  }
 
-  // closeDialog(val:boolean) {
-  //   this.
-  // }
 }
 

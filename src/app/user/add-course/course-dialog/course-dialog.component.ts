@@ -1,5 +1,7 @@
 import { Component, Inject, inject } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Course } from 'src/app/models/course.model';
 
 @Component({
   selector: 'app-course-dialog',
@@ -7,15 +9,38 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./course-dialog.component.scss']
 })
 export class CourseDialogComponent {
+  course: Course= { id: 0, name: '', duration: '' };
 
-  course: any = {};
+  constructor(
+    public dialogRef: MatDialogRef<CourseDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private formBuilder: FormBuilder
+  ) { }
 
-  constructor(public dialogRef: MatDialogRef<CourseDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
-    this.course = { ...data.course };
-  }
+  courseForm = this.formBuilder.group({
+    name: [this.data.course.name, Validators.required],
+    duration: [this.data.course.duration, Validators.required]
+  });
 
   onSave() {
-    this.dialogRef.close(this.course);
+    if (this.courseForm.valid) {
+       this.course = {
+        id: this.data.course.id,
+        name: this.courseForm.get('name')?.value,
+        duration: this.courseForm.get('duration')?.value
+      };
+    }
+    const index = this.data.courses.findIndex((course: Course) => course.id === this.data.course.id);
+    if (index > -1) {
+      // Update existing course
+      this.data.courses[index] = this.course;
+      localStorage.setItem('storedCourses', JSON.stringify(this.data.courses));
+    } else {
+      // Add new course
+      this.data.courses.push(this.course);
+      localStorage.setItem('storedCourses', JSON.stringify(this.data.courses));
+    }
+    this.dialogRef.close();
   }
 
   onCancel() {
@@ -23,24 +48,3 @@ export class CourseDialogComponent {
   }
 }
 
-@Component({
-  selector: 'app-delete-dialog',
-  template: `
-    <h1 mat-dialog-title>Confirm Delete</h1>
-    <div mat-dialog-content>
-      Are you sure you want to delete this course?
-    </div>
-    <div mat-dialog-actions>
-      <button mat-button (click)="dialogRef.close(false)">Cancel</button>
-      <button mat-button color="warn" (click)="dialogRef.close(true)">Delete</button>
-    </div>
-  `,
-  styles:[]
-})
-export class DeleteComponent {
-  constructor(
-    public dialogRef: MatDialogRef<DeleteComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-
-  ) { }
-}
