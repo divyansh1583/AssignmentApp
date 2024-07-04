@@ -1,6 +1,6 @@
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { CourseDialogComponent, DeleteComponent } from '../course-dialog/course-dialog.component';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { CourseDialogComponent } from '../course-dialog/course-dialog.component';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -9,24 +9,22 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./add-course.component.scss']
 })
 export class AddCourseComponent {
-deleteButton() {
-throw new Error('Method not implemented.');
-}
-  courses: any[] = [];
-  private idCounter = 1;
-  displayedColumns: string[] = ['id', 'name', 'duration', 'actions'];
-  hide=false;
 
-  constructor(public dialog: MatDialog,
-    private cdr: ChangeDetectorRef,
-    private toastr: ToastrService) {
+
+  private idCounter = 1;
+  protected courses: any[] = [];
+  protected displayedColumns: string[] = ['id', 'name', 'duration', 'actions'];
+
+
+  constructor(
+    public dialog: MatDialog,
+    private toastr: ToastrService
+  ) {
     // localStorage.setItem('storedCourses', JSON.stringify({ id: 1, name: 'ECE', duration: '4 Weeks' }));
     const storedCourses = localStorage.getItem('storedCourses');
     const storedId = localStorage.getItem('idCounter');
     this.idCounter = storedId ? parseInt(storedId) : 1;
     this.courses = storedCourses ? JSON.parse(storedCourses) : [];
-    // console.log('here');
-    // this.courses = storedCourses ? JSON.parse(storedCourses) : []; 
 
   }
 
@@ -68,20 +66,22 @@ throw new Error('Method not implemented.');
 
   }
   //delete courses
-  deleteCourse(courseId: number) {
-    var dialogRef = this.dialog.open(DeleteComponent, {
-      // width:'250px'
-    });
-    dialogRef.afterClosed().subscribe(
-      result => {
-        if (result) {
-          this.courses = this.courses.filter(c => c.id !== courseId);
-          localStorage.setItem('storedCourses', JSON.stringify(this.courses));
-          this.toastr.success("Course Delete successfully");
-        }
-      }
-    );
+  // deleteCourse(courseId: number) {
+  //   var dialogRef = this.dialog.open(this.deleteDialog!);
+  //   dialogRef.afterClosed().subscribe(
+  //     result => {
+  //       if (result) {
+  //         this.courses = this.courses.filter(c => c.id !== courseId);
+  //         localStorage.setItem('storedCourses', JSON.stringify(this.courses));
+  //         this.toastr.success("Course Delete successfully");
+  //       }
+  //     }
+  //   );
 
-  }
+  // }
+
+  // closeDialog(val:boolean) {
+  //   this.
+  // }
 }
 
