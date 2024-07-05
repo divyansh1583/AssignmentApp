@@ -14,8 +14,8 @@
 <!-- if there are courses -->
 <div *ngIf="courses.length > 0">
   <!-- table -->
-  <div class="container" style="width: 75%;">
-    <table class="table table-bordered">
+  <div class="container" style="width: 55%;">
+    <table class="table shadow">
       <thead class="text-center">
         <tr>
           <th *ngFor="let column of displayedColumns" scope="col">{{column | titlecase}}</th>

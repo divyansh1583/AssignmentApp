@@ -23,7 +23,7 @@ export class SubjectDialogComponent {
 
   subjectForm = this.formBuilder.group({
     name: [this.data.subject.name, Validators.required],
-    courseId: [null, Validators.required],
+    courseId: [this.data.subject.courseId, Validators.required],
     semester: [this.data.subject.semester, Validators.required],
     marks: [this.data.subject.marks, [Validators.required,CustomValidators.marksRangeValidator]]
   });
@@ -33,7 +33,7 @@ export class SubjectDialogComponent {
        this.subject = {
         id: this.data.subject.id,
         name: this.subjectForm.get('name')?.value,
-        courseId: this.subjectForm.get('courseId')?.value!,
+        courseId: this.subjectForm.get('courseId')?.value,
         semester: this.subjectForm.get('semester')?.value,
         marks: this.subjectForm.get('marks')?.value
       };

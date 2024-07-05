@@ -47,7 +47,7 @@ export class AddSubjectComponent {
       data: { 
         subject: subject ? 
         { ...subject } : 
-        { id: this.generateId(), name: '', courseId: 0,semester:'',marks:0}, 
+        { id: this.generateId(), name: '', courseId: null,semester:'',marks:0}, 
         subjects: this.subjects,
         courses:this.courses 
       }

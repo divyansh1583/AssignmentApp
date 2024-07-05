@@ -12,6 +12,7 @@ import { CustomValidators } from 'src/app/directives/validators';
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent {
+  constructor(){}
   states: { [key: string]: { id: string; name: string; }[] } = states;
   countries = countries;
   hide = true;
