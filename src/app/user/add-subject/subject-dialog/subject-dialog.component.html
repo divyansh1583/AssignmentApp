@@ -13,8 +13,8 @@
          
 
             <mat-form-field class="col" appearance="outline">
-                <mat-label>Select courseName</mat-label>
-                <mat-select formControlName="courseId" ma>
+                <mat-label>Select Course</mat-label>
+                <mat-select formControlName="courseId">
                     <mat-option *ngFor="let course of courses" [value]="course.id">{{course.name}}</mat-option>
                 </mat-select>
                 <mat-error *ngIf="subjectForm.get('courseId')?.hasError('required')">Please choose a

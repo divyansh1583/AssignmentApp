@@ -1,8 +1,8 @@
 export interface Subject {
     id: number;
     name: string;
-    courseId:number;
+    courseId: number;
     semester: string;
-    marks:number;
+    marks: number
 }
 

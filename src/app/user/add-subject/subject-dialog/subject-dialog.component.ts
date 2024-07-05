@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { CustomValidators, MyErrorStateMatcher } from 'src/app/directives/validators';
+import { CustomValidators} from 'src/app/directives/validators';
 import { Course } from 'src/app/models/course.model';
 import { Subject } from 'src/app/models/subject.model';
 
@@ -13,7 +13,6 @@ import { Subject } from 'src/app/models/subject.model';
 export class SubjectDialogComponent {
   subject: Subject= { id: 0, name: '', courseId:0,semester:'',marks:0 };
   protected courses: Course[] = [];
-  matcher = new MyErrorStateMatcher();  
   constructor(
     public dialogRef: MatDialogRef<SubjectDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -24,7 +23,7 @@ export class SubjectDialogComponent {
 
   subjectForm = this.formBuilder.group({
     name: [this.data.subject.name, Validators.required],
-    courseId: [this.data.subject.courseId, Validators.required],
+    courseId: [null, Validators.required],
     semester: [this.data.subject.semester, Validators.required],
     marks: [this.data.subject.marks, [Validators.required,CustomValidators.marksRangeValidator]]
   });
@@ -34,7 +33,7 @@ export class SubjectDialogComponent {
        this.subject = {
         id: this.data.subject.id,
         name: this.subjectForm.get('name')?.value,
-        courseId: this.subjectForm.get('courseId')?.value,
+        courseId: this.subjectForm.get('courseId')?.value!,
         semester: this.subjectForm.get('semester')?.value,
         marks: this.subjectForm.get('marks')?.value
       };
