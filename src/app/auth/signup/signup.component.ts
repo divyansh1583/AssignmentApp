@@ -5,6 +5,8 @@ import { states } from '../../data/states';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CustomValidators } from 'src/app/directives/validators';
+import { LoginService } from 'src/app/services/login.service';
+import { RegisterDetail } from '../../models/registerDetails.model';
 
 @Component({
   selector: 'app-signup',
@@ -12,7 +14,7 @@ import { CustomValidators } from 'src/app/directives/validators';
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent {
-  constructor(){}
+  constructor(private userService: LoginService) { }
   states: { [key: string]: { id: string; name: string; }[] } = states;
   countries = countries;
   hide = true;
@@ -20,7 +22,7 @@ export class SignupComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private toastr = inject(ToastrService);
-  gg=FormControl;
+  gg = FormControl;
   signupMat = this.fb.group({
     firstName: [null, [Validators.required, Validators.maxLength(20)]],
     lastName: [null, Validators.required],
@@ -50,16 +52,42 @@ export class SignupComponent {
     return [];
   }
   onSubmit() {
+    // if (this.signupMat.valid) {
+    //   localStorage.clear();
+    //   // const users = JSON.parse(localStorage.getItem('users') || '[]');
+    //   // users.push(this.signupMat.value);
+    //   var users=this.signupMat.value;
+    //   localStorage.setItem('users', JSON.stringify(users));
+    //   this.router.navigate(['/auth/login']);
+    //   this.toastr.success('User registered successfully', 'Success!');
+    // } else {
+    //   this.toastr.warning('Please write again', 'Invalid Credential!');
+    // }
     if (this.signupMat.valid) {
-      localStorage.clear();
-      // const users = JSON.parse(localStorage.getItem('users') || '[]');
-      // users.push(this.signupMat.value);
-      var users=this.signupMat.value;
-      localStorage.setItem('users', JSON.stringify(users));
-      this.router.navigate(['/auth/login']);
-      this.toastr.success('User registered successfully', 'Success!');
-    } else {
-      this.toastr.warning('Please write again', 'Invalid Credential!');
+      let registerDetails: RegisterDetail = {
+        userId:0,
+        firstName: this.signupMat.get('firstName')?.value!,
+        lastName: this.signupMat.get('lastName')?.value!,
+        email: this.signupMat.get('email')?.value!,
+        phoneNumber: this.signupMat.get('phoneNumber')?.value!,
+        countryId: this.signupMat.get('country')?.value!,
+        stateId: this.signupMat.get('state')?.value!,
+        gender: this.signupMat.get('gender')?.value!,
+        isDeleted: false,
+        password: this.signupMat.get('password')?.value!
+      };
+      this.userService.register(registerDetails).subscribe(
+        (res:any)=>{
+          if(res>0){
+            this.toastr.success('User registered successfully', 'Success!');
+          }
+        else{
+          this.toastr.error('User already exists', 'Error!');
+        }
+      });
     }
+    else {
+        this.toastr.warning('Please write again', 'Invalid Credential!');
+      }
   }
 }
