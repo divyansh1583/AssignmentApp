@@ -77,13 +77,10 @@ export class SignupComponent {
         password: this.signupMat.get('password')?.value!
       };
       this.userService.register(registerDetails).subscribe(
-        (res:any)=>{
-          if(res>0){
+        res=>{
+          console.log(res);
             this.toastr.success('User registered successfully', 'Success!');
-          }
-        else{
-          this.toastr.error('User already exists', 'Error!');
-        }
+            this.router.navigate(['/auth/login']);
       });
     }
     else {

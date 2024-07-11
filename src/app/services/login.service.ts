@@ -20,7 +20,8 @@ export class LoginService {
   }
 
   //register
-  register( registerDetail :RegisterDetail ){
+  register( registerDetail :RegisterDetail ):Observable<any>{
+    console.log(registerDetail);
     return this.http.post<any>(`${this.apiUrl}/register`, registerDetail);
   }
  

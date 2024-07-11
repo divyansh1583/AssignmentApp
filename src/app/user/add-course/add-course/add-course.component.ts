@@ -19,7 +19,8 @@ export class AddCourseComponent implements OnInit{
   constructor(
     public dialog: MatDialog, 
     private toastr: ToastrService,
-    private cdr: ChangeDetectorRef) {}
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.loadCourses();
