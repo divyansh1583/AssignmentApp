@@ -15,6 +15,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { SignupComponent } from './signup/signup.component';
 
@@ -40,7 +42,8 @@ import { SignupComponent } from './signup/signup.component';
     MatInputModule,
     MatFormFieldModule,
     MatCardModule,
-    MatIconModule
+    MatIconModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     provideNgxMask()

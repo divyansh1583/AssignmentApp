@@ -23,12 +23,13 @@
 
           <mat-form-field appearance="outline" class="col">
             <mat-label>Password</mat-label>
-            <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password" formControlName="password" appNoSpace>
+            <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password" formControlName="password"
+              appNoSpace>
             <button mat-icon-button matSuffix (click)="hide = !hide" type="button">
               <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
             <mat-error *ngIf="getControl('password')?.errors?.['required']">Password is required.</mat-error>
-            
+
           </mat-form-field>
         </div>
       </mat-card-content>
@@ -38,6 +39,11 @@
       </mat-card-actions>
 
     </mat-card>
+    <!-- Loading overlay -->
+    <div *ngIf="loading" class="loading-overlay">
+      <mat-spinner diameter="32"></mat-spinner>
+      <p>Loading...</p>
+    </div>
     <div class="container" style="display: flex; justify-content: center; align-items: center; margin: 10px auto;">
       <span>Don't have a account? </span>
       <a mat-button routerLink="/auth/signup">Sign Up</a>

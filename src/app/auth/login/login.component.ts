@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { NavigationStart, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { LoginService } from 'src/app/services/login.service';
 import { LoginDetails } from '../../models/login.modal';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -11,6 +12,7 @@ import { LoginDetails } from '../../models/login.modal';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
+  loading = false; // Add a loading flag
   hide = true;
   loginDetails: LoginDetails = { email: '', password: '' };
 
@@ -19,7 +21,14 @@ export class LoginComponent {
     private toastr: ToastrService,
     private loginService: LoginService
 
-  ) { }
+  ) {
+     // Subscribe to router events
+     this.router.events.pipe(
+      filter((event: any) => event instanceof NavigationStart)
+    ).subscribe(() => {
+      this.loading = true; // Set loading to true on navigation start
+    });
+   }
 
   loginForm = new FormGroup({
     email: new FormControl("", [Validators.required, Validators.email]),
